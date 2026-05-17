@@ -77,7 +77,7 @@ Then the platform:
 
 - compares device state against a baseline
 - flags anomalies
-- generates AI explanations
+- generates triage explanations
 - builds an incident timeline
 
 ## Killer Features
@@ -179,7 +179,8 @@ python3 -m agent.cli analyze \
   --baseline data/baseline-snapshot.json \
   --current data/current-snapshot.json \
   --findings reports/findings.json \
-  --report reports/incident-summary.md
+  --report reports/incident-summary.md \
+  --anomaly-report reports/anomaly-report.md
 ```
 
 Collect a local host snapshot:
@@ -200,12 +201,28 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 - Compare current device state against a baseline snapshot.
 - Detect new services, cron jobs, SSH keys, processes, and outbound connections.
 - Flag suspicious cron commands, startup services, process arguments, unusual outbound ports, and repeated remote connections.
-- Generate JSON findings and a Markdown incident report.
+- Generate JSON findings, a Markdown incident report, and a compact anomaly report.
+
+## Demo Artifacts
+
+- [Architecture](docs/architecture.md)
+- [Threat model](docs/threat-model.md)
+- [Deployment](docs/deployment.md)
+- [Demo walkthrough](docs/demo.md)
+- [Release notes](docs/release-notes.md)
+- [Sample incident report](reports/incident-summary.md)
+- [Sample anomaly report](reports/anomaly-report.md)
+
+## Docker Demo
+
+```bash
+docker compose run --rm ghostwire-demo
+```
 
 ## Roadmap
 
-- Polish sample output screenshots or terminal demos
-- Add architecture diagram and deeper implementation notes
-- Expand test coverage around edge cases
-- Add Docker or local demo workflow where useful
-- Prepare `v0.1.0-mvp` release notes
+- Add signed baseline snapshots and baseline history
+- Add allow-list support for approved services, keys, and destinations
+- Add richer timeline output for investigation handoff
+- Add FastAPI ingestion and React dashboard after the CLI workflow stays stable
+- Prepare GitHub release `v0.1.0-mvp`

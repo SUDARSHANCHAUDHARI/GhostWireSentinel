@@ -10,7 +10,7 @@ from agent.baseline.snapshot import build_snapshot
 from agent.detectors.anomaly import detect_anomalies
 from agent.detectors.beaconing import detect_beaconing
 from agent.detectors.persistence import detect_persistence
-from agent.report import build_markdown_report, sort_findings
+from agent.report import build_anomaly_report, build_markdown_report, sort_findings
 
 
 def load_json(path: Path) -> dict:
@@ -45,8 +45,11 @@ def analyze_command(args: argparse.Namespace) -> None:
     write_json(args.findings, findings)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(build_markdown_report(findings, current, baseline), encoding="utf-8")
+    args.anomaly_report.parent.mkdir(parents=True, exist_ok=True)
+    args.anomaly_report.write_text(build_anomaly_report(findings, current, baseline), encoding="utf-8")
     print(f"Wrote {len(findings)} findings to {args.findings}")
     print(f"Wrote report to {args.report}")
+    print(f"Wrote anomaly report to {args.anomaly_report}")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -63,6 +66,7 @@ def build_parser() -> argparse.ArgumentParser:
     analyze.add_argument("--current", type=Path, required=True)
     analyze.add_argument("--findings", type=Path, default=Path("reports/findings.json"))
     analyze.add_argument("--report", type=Path, default=Path("reports/incident-summary.md"))
+    analyze.add_argument("--anomaly-report", type=Path, default=Path("reports/anomaly-report.md"))
     analyze.set_defaults(func=analyze_command)
 
     return parser

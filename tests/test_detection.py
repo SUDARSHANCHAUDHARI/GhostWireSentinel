@@ -9,7 +9,7 @@ from pathlib import Path
 from agent.detectors.anomaly import detect_anomalies
 from agent.detectors.beaconing import detect_beaconing
 from agent.detectors.persistence import detect_persistence
-from agent.report import build_markdown_report
+from agent.report import build_anomaly_report, build_markdown_report, top_priorities
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,7 +62,25 @@ class DetectionTests(unittest.TestCase):
 
         self.assertIn("GhostWire Sentinel Incident Report", report)
         self.assertIn("Total findings", report)
+        self.assertIn("Priority Queue", report)
+        self.assertIn("Recommended next step", report)
         self.assertIn("New SSH key observed outside baseline", report)
+
+    def test_report_builds_anomaly_breakdown(self) -> None:
+        baseline = load_sample("baseline-snapshot.json")
+        current = load_sample("current-snapshot.json")
+        findings = [
+            *detect_anomalies(current, baseline),
+            *detect_persistence(current),
+            *detect_beaconing(current["connections"]),
+        ]
+
+        report = build_anomaly_report(findings, current, baseline)
+        priorities = top_priorities(findings)
+
+        self.assertEqual("critical", priorities[0]["severity"])
+        self.assertIn("Detection Breakdown", report)
+        self.assertIn("baseline.new_ssh_keys", report)
 
 
 if __name__ == "__main__":

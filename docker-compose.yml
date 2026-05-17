@@ -1,0 +1,20 @@
+services:
+  ghostwire-demo:
+    build: .
+    volumes:
+      - ./reports:/app/reports
+    command:
+      - python
+      - -m
+      - agent.cli
+      - analyze
+      - --baseline
+      - data/baseline-snapshot.json
+      - --current
+      - data/current-snapshot.json
+      - --findings
+      - reports/findings.json
+      - --report
+      - reports/incident-summary.md
+      - --anomaly-report
+      - reports/anomaly-report.md
