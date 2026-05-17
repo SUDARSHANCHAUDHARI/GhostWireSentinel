@@ -1,6 +1,25 @@
 # GhostWire Sentinel
 
-AI-powered stealth persistence and anomaly detection platform.
+[![Python](https://img.shields.io/badge/Python-3.12-blue)](#) [![Status](https://img.shields.io/badge/status-MVP-green)](#) [![Security](https://img.shields.io/badge/security-defensive%20lab-purple)](#)
+
+AI-assisted endpoint threat hunting platform for stealth persistence, baseline drift, and suspicious outbound behavior.
+
+- **Portfolio group:** Flagship cybersecurity product project
+- **Status:** MVP implemented, tested, committed, and pushed to GitHub
+- **GitHub:** https://github.com/SUDARSHANCHAUDHARI/GhostWireSentinel
+- **Local path:** `/Users/screencloudsudarshan/SUDARSHAN_CODE/sudarshan_repos/CyberSecurity/GhostWireSentinel`
+
+## MVP Snapshot
+
+This repository includes a working MVP with safe sample data, deterministic detection or analysis logic, local tests, and generated output reports where relevant. It is ready for README/demo polish or deeper product work.
+
+## Safe Use
+
+This project is defensive and analysis-focused. Use only with logs, systems, repositories, and lab environments you own or have permission to assess.
+
+## Overview
+
+GhostWire Sentinel is an AI-powered stealth persistence and anomaly detection platform.
 
 This is an advanced cybersecurity startup-style idea focused on silent suspicious behavior, not just basic uptime or health monitoring.
 
@@ -183,17 +202,10 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 - Flag suspicious cron commands, startup services, process arguments, unusual outbound ports, and repeated remote connections.
 - Generate JSON findings and a Markdown incident report.
 
-## Repository Status
+## Roadmap
 
-This repository contains the production-ready foundation for the GhostWire Sentinel MVP. The current codebase is scaffolded and ready for focused implementation work.
-
-## Production Foundation
-
-- Private GitHub repository linked to `main`
-- Initial MVP scaffold committed
-- CI repository-health workflow
-- Security policy
-- Contribution guide
-- Pull request and issue templates
-- Production readiness checklist
-- Safe ignore rules for local secrets and generated files
+- Polish sample output screenshots or terminal demos
+- Add architecture diagram and deeper implementation notes
+- Expand test coverage around edge cases
+- Add Docker or local demo workflow where useful
+- Prepare `v0.1.0-mvp` release notes
