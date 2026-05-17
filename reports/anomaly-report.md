@@ -3,6 +3,7 @@
 Host: kiosk-01
 Current snapshot: 2026-05-17T00:15:00+00:00
 Baseline snapshot: 2026-05-17T00:00:00+00:00
+Suppressed findings: 1
 
 ## Detection Breakdown
 
@@ -12,7 +13,6 @@ Baseline snapshot: 2026-05-17T00:00:00+00:00
 - `persistence.cron`: 1
 - `persistence.service`: 1
 - `connection.suspicious`: 1
-- `baseline.new_processes`: 1
 - `baseline.new_connections`: 1
 - `persistence.process`: 1
 - `connection.repeated_remote`: 1

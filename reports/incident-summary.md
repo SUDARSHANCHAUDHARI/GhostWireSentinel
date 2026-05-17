@@ -1,16 +1,17 @@
 # GhostWire Sentinel Incident Report
 
-Generated: 2026-05-17T18:49:16.729994+00:00
+Generated: 2026-05-17T18:55:43.222038+00:00
 Host: kiosk-01
 Snapshot captured: 2026-05-17T00:15:00+00:00
 Baseline captured: 2026-05-17T00:00:00+00:00
 
 ## Summary
 
-- Total findings: 10
+- Total findings: 9
+- Suppressed allow-listed findings: 1
 - Critical: 1
 - High: 5
-- Medium: 4
+- Medium: 3
 - Low: 0
 
 ## Priority Queue
@@ -63,28 +64,21 @@ Baseline captured: 2026-05-17T00:00:00+00:00
 - Evidence: `process=python, protocol=tcp, remote=198.51.100.77:4444`
 - Recommended next step: Isolate the host if this remote is unexpected and preserve connection evidence.
 
-### 7. New process observed outside baseline.
-
-- Severity: `medium`
-- Type: `baseline.new_processes`
-- Evidence: `args=python -c import socket,subprocess, command=python, pid=777, ppid=1, user=kiosk`
-- Recommended next step: Inspect process ancestry, binary path, environment, and persistence relationship.
-
-### 8. New outbound connection observed outside baseline.
+### 7. New outbound connection observed outside baseline.
 
 - Severity: `medium`
 - Type: `baseline.new_connections`
 - Evidence: `process=python, protocol=tcp, remote=198.51.100.77:4444`
 - Recommended next step: Validate the remote destination and block suspicious egress while investigating.
 
-### 9. Running process includes command-line behavior worth investigating.
+### 8. Running process includes command-line behavior worth investigating.
 
 - Severity: `medium`
 - Type: `persistence.process`
 - Evidence: `args=python -c import socket,subprocess, command=python, pid=777, ppid=1, user=kiosk`
 - Recommended next step: Capture process details and compare against deployment history.
 
-### 10. Repeated outbound connections to the same remote may indicate beaconing.
+### 9. Repeated outbound connections to the same remote may indicate beaconing.
 
 - Severity: `medium`
 - Type: `connection.repeated_remote`

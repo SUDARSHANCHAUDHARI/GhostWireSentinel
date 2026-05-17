@@ -178,9 +178,12 @@ Run the demo analysis against the included safe sample snapshots:
 python3 -m agent.cli analyze \
   --baseline data/baseline-snapshot.json \
   --current data/current-snapshot.json \
+  --allowlist rules/allowlist.json \
   --findings reports/findings.json \
+  --suppressed-findings reports/suppressed-findings.json \
   --report reports/incident-summary.md \
-  --anomaly-report reports/anomaly-report.md
+  --anomaly-report reports/anomaly-report.md \
+  --timeline-report reports/timeline-report.md
 ```
 
 Collect a local host snapshot:
@@ -201,7 +204,8 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 - Compare current device state against a baseline snapshot.
 - Detect new services, cron jobs, SSH keys, processes, and outbound connections.
 - Flag suspicious cron commands, startup services, process arguments, unusual outbound ports, and repeated remote connections.
-- Generate JSON findings, a Markdown incident report, and a compact anomaly report.
+- Suppress approved findings with an operator-managed allow-list.
+- Generate JSON findings, suppressed findings, an incident report, anomaly report, and timeline report.
 
 ## Demo Artifacts
 
@@ -212,6 +216,7 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 - [Release notes](docs/release-notes.md)
 - [Sample incident report](reports/incident-summary.md)
 - [Sample anomaly report](reports/anomaly-report.md)
+- [Sample timeline report](reports/timeline-report.md)
 
 ## Docker Demo
 
@@ -222,7 +227,7 @@ docker compose run --rm ghostwire-demo
 ## Roadmap
 
 - Add signed baseline snapshots and baseline history
-- Add allow-list support for approved services, keys, and destinations
+- Expand allow-list matching with expiration dates and owner fields
 - Add richer timeline output for investigation handoff
 - Add FastAPI ingestion and React dashboard after the CLI workflow stays stable
 - Prepare GitHub release `v0.1.0-mvp`

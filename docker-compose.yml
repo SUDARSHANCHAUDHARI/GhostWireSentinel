@@ -12,9 +12,15 @@ services:
       - data/baseline-snapshot.json
       - --current
       - data/current-snapshot.json
+      - --allowlist
+      - rules/allowlist.json
       - --findings
       - reports/findings.json
+      - --suppressed-findings
+      - reports/suppressed-findings.json
       - --report
       - reports/incident-summary.md
       - --anomaly-report
       - reports/anomaly-report.md
+      - --timeline-report
+      - reports/timeline-report.md

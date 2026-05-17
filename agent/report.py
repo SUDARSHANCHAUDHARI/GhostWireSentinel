@@ -44,7 +44,12 @@ def _format_evidence(evidence: dict) -> str:
     return ", ".join(f"{key}={value}" for key, value in evidence.items()) or "no evidence"
 
 
-def build_markdown_report(findings: list[dict], current: dict, baseline: dict | None = None) -> str:
+def build_markdown_report(
+    findings: list[dict],
+    current: dict,
+    baseline: dict | None = None,
+    suppressed: list[dict] | None = None,
+) -> str:
     """Return a Markdown incident report."""
     sorted_findings = sort_findings(findings)
     counts = severity_counts(sorted_findings)
@@ -65,6 +70,7 @@ def build_markdown_report(findings: list[dict], current: dict, baseline: dict | 
             "## Summary",
             "",
             f"- Total findings: {len(sorted_findings)}",
+            f"- Suppressed allow-listed findings: {len(suppressed or [])}",
             f"- Critical: {counts.get('critical', 0)}",
             f"- High: {counts.get('high', 0)}",
             f"- Medium: {counts.get('medium', 0)}",
@@ -100,7 +106,12 @@ def build_markdown_report(findings: list[dict], current: dict, baseline: dict | 
     return "\n".join(lines) + "\n"
 
 
-def build_anomaly_report(findings: list[dict], current: dict, baseline: dict | None = None) -> str:
+def build_anomaly_report(
+    findings: list[dict],
+    current: dict,
+    baseline: dict | None = None,
+    suppressed: list[dict] | None = None,
+) -> str:
     """Return a compact anomaly-focused report for dashboards or triage."""
     sorted_findings = sort_findings(findings)
     metadata = current.get("metadata", {})
@@ -112,6 +123,7 @@ def build_anomaly_report(findings: list[dict], current: dict, baseline: dict | N
         f"Host: {metadata.get('hostname', 'unknown')}",
         f"Current snapshot: {metadata.get('captured_at', 'unknown')}",
         f"Baseline snapshot: {baseline_metadata.get('captured_at', 'unknown')}",
+        f"Suppressed findings: {len(suppressed or [])}",
         "",
         "## Detection Breakdown",
         "",
@@ -129,4 +141,41 @@ def build_anomaly_report(findings: list[dict], current: dict, baseline: dict | N
                 "- Preserve the current snapshot before removing evidence from the endpoint.",
             ]
         )
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def build_timeline_report(
+    findings: list[dict],
+    current: dict,
+    baseline: dict | None = None,
+    suppressed: list[dict] | None = None,
+) -> str:
+    """Return an investigation timeline report."""
+    metadata = current.get("metadata", {})
+    baseline_metadata = (baseline or {}).get("metadata", {})
+    lines = [
+        "# GhostWire Sentinel Timeline Report",
+        "",
+        f"Host: {metadata.get('hostname', 'unknown')}",
+        "",
+        "## Timeline",
+        "",
+        f"1. Baseline captured: `{baseline_metadata.get('captured_at', 'unknown')}`",
+        f"2. Current snapshot captured: `{metadata.get('captured_at', 'unknown')}`",
+        f"3. Active findings generated: `{len(findings)}`",
+        f"4. Allow-listed findings suppressed: `{len(suppressed or [])}`",
+        "",
+        "## Investigation Order",
+        "",
+    ]
+    if not findings:
+        lines.append("- No active findings require investigation.")
+    for index, finding in enumerate(top_priorities(findings, limit=10), start=1):
+        lines.append(
+            f"{index}. `{finding.get('severity', 'unknown')}` {finding.get('kind', 'unknown')} - {finding.get('summary', 'Finding')}"
+        )
+    if suppressed:
+        lines.extend(["", "## Suppressed", ""])
+        for item in suppressed:
+            lines.append(f"- `{item.get('kind', 'unknown')}` - {item.get('summary', 'Finding')}")
     return "\n".join(lines).rstrip() + "\n"

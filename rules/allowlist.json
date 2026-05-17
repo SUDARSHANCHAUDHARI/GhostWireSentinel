@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "kind": "baseline.new_processes",
+      "evidence": {
+        "command": "python",
+        "user": "kiosk"
+      },
+      "reason": "Demo allow-list example for an approved kiosk maintenance helper."
+    }
+  ]
+}

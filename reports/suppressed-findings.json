@@ -1,0 +1,15 @@
+[
+  {
+    "evidence": {
+      "args": "python -c import socket,subprocess",
+      "command": "python",
+      "pid": "777",
+      "ppid": "1",
+      "user": "kiosk"
+    },
+    "kind": "baseline.new_processes",
+    "severity": "medium",
+    "summary": "New process observed outside baseline.",
+    "suppressed": true
+  }
+]

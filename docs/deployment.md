@@ -8,9 +8,12 @@ The MVP has two useful deployment modes: local Python and Docker demo. Both are 
 python3 -m agent.cli analyze \
   --baseline data/baseline-snapshot.json \
   --current data/current-snapshot.json \
+  --allowlist rules/allowlist.json \
   --findings reports/findings.json \
+  --suppressed-findings reports/suppressed-findings.json \
   --report reports/incident-summary.md \
-  --anomaly-report reports/anomaly-report.md
+  --anomaly-report reports/anomaly-report.md \
+  --timeline-report reports/timeline-report.md
 ```
 
 ## Local Collection
@@ -28,6 +31,10 @@ docker compose run --rm ghostwire-demo
 ```
 
 This runs the included synthetic baseline/current snapshots and writes reports to `reports/`.
+
+## Allow-List
+
+Use `rules/allowlist.json` to suppress expected findings. Keep this file reviewed and versioned, because every suppression is an operational decision.
 
 ## Future Deployment Direction
 

@@ -11,7 +11,10 @@ flowchart LR
   Baseline["Baseline snapshot JSON"] --> Detectors["Detection engine"]
   Snapshot --> Detectors
   Detectors --> Findings["Findings JSON"]
-  Detectors --> Reports["Incident + anomaly reports"]
+  Findings --> Allowlist["Allow-list filter"]
+  Allowlist --> Active["Active findings"]
+  Allowlist --> Suppressed["Suppressed findings"]
+  Active --> Reports["Incident + anomaly + timeline reports"]
 ```
 
 ## Agent Modules

@@ -6,10 +6,11 @@ import json
 import unittest
 from pathlib import Path
 
+from agent.allowlist import apply_allowlist, load_allowlist
 from agent.detectors.anomaly import detect_anomalies
 from agent.detectors.beaconing import detect_beaconing
 from agent.detectors.persistence import detect_persistence
-from agent.report import build_anomaly_report, build_markdown_report, top_priorities
+from agent.report import build_anomaly_report, build_markdown_report, build_timeline_report, top_priorities
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -81,6 +82,31 @@ class DetectionTests(unittest.TestCase):
         self.assertEqual("critical", priorities[0]["severity"])
         self.assertIn("Detection Breakdown", report)
         self.assertIn("baseline.new_ssh_keys", report)
+
+    def test_allowlist_suppresses_matching_finding(self) -> None:
+        baseline = load_sample("baseline-snapshot.json")
+        current = load_sample("current-snapshot.json")
+        findings = detect_anomalies(current, baseline)
+
+        active, suppressed = apply_allowlist(findings, load_allowlist(ROOT / "rules/allowlist.json"))
+
+        self.assertTrue(any(item["kind"] == "baseline.new_processes" for item in suppressed))
+        self.assertFalse(any(item["kind"] == "baseline.new_processes" for item in active))
+
+    def test_timeline_report_includes_suppressed_count(self) -> None:
+        baseline = load_sample("baseline-snapshot.json")
+        current = load_sample("current-snapshot.json")
+        findings = [
+            *detect_anomalies(current, baseline),
+            *detect_persistence(current),
+            *detect_beaconing(current["connections"]),
+        ]
+        active, suppressed = apply_allowlist(findings, load_allowlist(ROOT / "rules/allowlist.json"))
+
+        report = build_timeline_report(active, current, baseline, suppressed)
+
+        self.assertIn("GhostWire Sentinel Timeline Report", report)
+        self.assertIn("Allow-listed findings suppressed", report)
 
 
 if __name__ == "__main__":
