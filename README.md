@@ -149,7 +149,39 @@ It can evolve into:
 
 ## Status
 
-Scaffolded. Implementation pending.
+Working CLI MVP.
+
+## Quick Start
+
+Run the demo analysis against the included safe sample snapshots:
+
+```bash
+python3 -m agent.cli analyze \
+  --baseline data/baseline-snapshot.json \
+  --current data/current-snapshot.json \
+  --findings reports/findings.json \
+  --report reports/incident-summary.md
+```
+
+Collect a local host snapshot:
+
+```bash
+python3 -m agent.cli collect --output data/current-snapshot.json
+```
+
+Run tests:
+
+```bash
+python3 -m unittest discover -s tests -p 'test_*.py'
+```
+
+## MVP Capabilities
+
+- Collect running processes, cron jobs, SSH authorized key metadata, startup services, and outbound connections.
+- Compare current device state against a baseline snapshot.
+- Detect new services, cron jobs, SSH keys, processes, and outbound connections.
+- Flag suspicious cron commands, startup services, process arguments, unusual outbound ports, and repeated remote connections.
+- Generate JSON findings and a Markdown incident report.
 
 ## Repository Status
 
@@ -165,4 +197,3 @@ This repository contains the production-ready foundation for the GhostWire Senti
 - Pull request and issue templates
 - Production readiness checklist
 - Safe ignore rules for local secrets and generated files
-

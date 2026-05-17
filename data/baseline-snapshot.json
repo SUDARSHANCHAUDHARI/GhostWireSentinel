@@ -1,0 +1,44 @@
+{
+  "connections": [
+    {
+      "process": "chrome",
+      "protocol": "tcp",
+      "remote": "203.0.113.10:443"
+    }
+  ],
+  "cron_jobs": [
+    {
+      "command": "0 3 * * * /usr/local/bin/backup",
+      "line": "1",
+      "source": "/etc/crontab"
+    }
+  ],
+  "metadata": {
+    "captured_at": "2026-05-17T00:00:00+00:00",
+    "hostname": "kiosk-01",
+    "platform": "Linux"
+  },
+  "processes": [
+    {
+      "args": "/usr/bin/chrome --kiosk",
+      "command": "chrome",
+      "pid": "100",
+      "ppid": "1",
+      "user": "kiosk"
+    }
+  ],
+  "services": [
+    {
+      "name": "display-agent.service",
+      "state": "enabled"
+    }
+  ],
+  "ssh_keys": [
+    {
+      "fingerprint": "baselinekey001",
+      "line": "1",
+      "source": "/home/kiosk/.ssh/authorized_keys",
+      "type": "ssh-ed25519"
+    }
+  ]
+}

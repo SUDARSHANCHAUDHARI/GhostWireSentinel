@@ -1,0 +1,1 @@
+"""GhostWire Sentinel agent package."""
