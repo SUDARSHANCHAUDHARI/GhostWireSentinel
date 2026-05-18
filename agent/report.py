@@ -55,6 +55,7 @@ def build_markdown_report(
     counts = severity_counts(sorted_findings)
     metadata = current.get("metadata", {})
     baseline_metadata = (baseline or {}).get("metadata", {})
+    approval = baseline_metadata.get("baseline_approval", {})
     lines = [
         "# GhostWire Sentinel Incident Report",
         "",
@@ -64,6 +65,8 @@ def build_markdown_report(
     ]
     if baseline_metadata:
         lines.append(f"Baseline captured: {baseline_metadata.get('captured_at', 'unknown')}")
+    if approval:
+        lines.append(f"Baseline approved by: {approval.get('approved_by', 'unknown')} at {approval.get('approved_at', 'unknown')}")
     lines.extend(
         [
             "",
@@ -116,6 +119,7 @@ def build_anomaly_report(
     sorted_findings = sort_findings(findings)
     metadata = current.get("metadata", {})
     baseline_metadata = (baseline or {}).get("metadata", {})
+    approval = baseline_metadata.get("baseline_approval", {})
     by_kind = Counter(str(finding.get("kind", "unknown")) for finding in sorted_findings)
     lines = [
         "# GhostWire Sentinel Anomaly Report",
@@ -123,6 +127,7 @@ def build_anomaly_report(
         f"Host: {metadata.get('hostname', 'unknown')}",
         f"Current snapshot: {metadata.get('captured_at', 'unknown')}",
         f"Baseline snapshot: {baseline_metadata.get('captured_at', 'unknown')}",
+        f"Baseline approved: {approval.get('approved_at', 'unapproved')}",
         f"Suppressed findings: {len(suppressed or [])}",
         "",
         "## Detection Breakdown",
@@ -153,6 +158,7 @@ def build_timeline_report(
     """Return an investigation timeline report."""
     metadata = current.get("metadata", {})
     baseline_metadata = (baseline or {}).get("metadata", {})
+    approval = baseline_metadata.get("baseline_approval", {})
     lines = [
         "# GhostWire Sentinel Timeline Report",
         "",
@@ -161,9 +167,10 @@ def build_timeline_report(
         "## Timeline",
         "",
         f"1. Baseline captured: `{baseline_metadata.get('captured_at', 'unknown')}`",
-        f"2. Current snapshot captured: `{metadata.get('captured_at', 'unknown')}`",
-        f"3. Active findings generated: `{len(findings)}`",
-        f"4. Allow-listed findings suppressed: `{len(suppressed or [])}`",
+        f"2. Baseline approved: `{approval.get('approved_at', 'unapproved')}`",
+        f"3. Current snapshot captured: `{metadata.get('captured_at', 'unknown')}`",
+        f"4. Active findings generated: `{len(findings)}`",
+        f"5. Allow-listed findings suppressed: `{len(suppressed or [])}`",
         "",
         "## Investigation Order",
         "",

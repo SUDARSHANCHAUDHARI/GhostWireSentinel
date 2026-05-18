@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import json
+import tempfile
 import unittest
 from pathlib import Path
 
 from agent.allowlist import apply_allowlist, load_allowlist
+from agent.baseline.approval import append_history, approve_snapshot, snapshot_hash
 from agent.detectors.anomaly import detect_anomalies
 from agent.detectors.beaconing import detect_beaconing
 from agent.detectors.persistence import detect_persistence
@@ -107,6 +109,25 @@ class DetectionTests(unittest.TestCase):
 
         self.assertIn("GhostWire Sentinel Timeline Report", report)
         self.assertIn("Allow-listed findings suppressed", report)
+
+    def test_approves_baseline_with_hash_metadata(self) -> None:
+        baseline = load_sample("baseline-snapshot.json")
+
+        approved, record = approve_snapshot(baseline, "tester", "unit test")
+
+        self.assertEqual(record["snapshot_hash"], snapshot_hash(baseline))
+        self.assertEqual("tester", approved["metadata"]["baseline_approval"]["approved_by"])
+
+    def test_history_is_idempotent_by_snapshot_hash(self) -> None:
+        baseline = load_sample("baseline-snapshot.json")
+        _, record = approve_snapshot(baseline, "tester", "unit test")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "history.json"
+            append_history(path, record)
+            history = append_history(path, record)
+
+        self.assertEqual(1, len(history))
 
 
 if __name__ == "__main__":

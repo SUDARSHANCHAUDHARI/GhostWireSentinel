@@ -5,8 +5,15 @@ The MVP has two useful deployment modes: local Python and Docker demo. Both are 
 ## Local Python Demo
 
 ```bash
+python3 -m agent.cli approve-baseline \
+  --snapshot data/baseline-snapshot.json \
+  --output data/approved-baseline-snapshot.json \
+  --history data/baseline-history.json \
+  --approved-by sudarshan \
+  --reason "Known-good demo kiosk baseline"
+
 python3 -m agent.cli analyze \
-  --baseline data/baseline-snapshot.json \
+  --baseline data/approved-baseline-snapshot.json \
   --current data/current-snapshot.json \
   --allowlist rules/allowlist.json \
   --findings reports/findings.json \
@@ -35,6 +42,10 @@ This runs the included synthetic baseline/current snapshots and writes reports t
 ## Allow-List
 
 Use `rules/allowlist.json` to suppress expected findings. Keep this file reviewed and versioned, because every suppression is an operational decision.
+
+## Baseline Approval
+
+Use `approve-baseline` after a trusted deployment or after manually validating a device state. The command stamps approval metadata into the approved baseline and appends a record to `data/baseline-history.json`.
 
 ## Future Deployment Direction
 

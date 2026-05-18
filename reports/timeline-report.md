@@ -5,9 +5,10 @@ Host: kiosk-01
 ## Timeline
 
 1. Baseline captured: `2026-05-17T00:00:00+00:00`
-2. Current snapshot captured: `2026-05-17T00:15:00+00:00`
-3. Active findings generated: `9`
-4. Allow-listed findings suppressed: `1`
+2. Baseline approved: `2026-05-18T03:45:21.505119+00:00`
+3. Current snapshot captured: `2026-05-17T00:15:00+00:00`
+4. Active findings generated: `9`
+5. Allow-listed findings suppressed: `1`
 
 ## Investigation Order
 

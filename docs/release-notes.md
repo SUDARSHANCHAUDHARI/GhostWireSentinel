@@ -16,6 +16,7 @@ Initial portfolio MVP for GhostWire Sentinel.
 - Markdown anomaly report
 - Markdown timeline report
 - Operator allow-list for approved findings
+- Baseline approval command and baseline history ledger
 - Unit tests and GitHub Actions CI
 - Docker Compose demo path
 

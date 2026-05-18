@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 from agent.allowlist import apply_allowlist, load_allowlist
+from agent.baseline.approval import append_history, approve_snapshot
 from agent.baseline.snapshot import build_snapshot
 from agent.detectors.anomaly import detect_anomalies
 from agent.detectors.beaconing import detect_beaconing
@@ -30,6 +31,17 @@ def collect_command(args: argparse.Namespace) -> None:
     snapshot = build_snapshot()
     write_json(args.output, snapshot)
     print(f"Wrote snapshot to {args.output}")
+
+
+def approve_baseline_command(args: argparse.Namespace) -> None:
+    """Approve a snapshot as a baseline and append to history."""
+    snapshot = load_json(args.snapshot)
+    approved, record = approve_snapshot(snapshot, args.approved_by, args.reason)
+    write_json(args.output, approved)
+    append_history(args.history, record)
+    print(f"Approved baseline {record['snapshot_hash'][:12]} for {record['hostname']}")
+    print(f"Wrote approved baseline to {args.output}")
+    print(f"Appended history to {args.history}")
 
 
 def analyze_command(args: argparse.Namespace) -> None:
@@ -67,6 +79,14 @@ def build_parser() -> argparse.ArgumentParser:
     collect = subparsers.add_parser("collect", help="Collect a local device snapshot")
     collect.add_argument("--output", type=Path, default=Path("data/current-snapshot.json"))
     collect.set_defaults(func=collect_command)
+
+    approve = subparsers.add_parser("approve-baseline", help="Approve a snapshot as a trusted baseline")
+    approve.add_argument("--snapshot", type=Path, required=True)
+    approve.add_argument("--output", type=Path, default=Path("data/approved-baseline-snapshot.json"))
+    approve.add_argument("--history", type=Path, default=Path("data/baseline-history.json"))
+    approve.add_argument("--approved-by", default="operator")
+    approve.add_argument("--reason", default="Approved known-good baseline")
+    approve.set_defaults(func=approve_baseline_command)
 
     analyze = subparsers.add_parser("analyze", help="Analyze a current snapshot against a baseline")
     analyze.add_argument("--baseline", type=Path, required=True)

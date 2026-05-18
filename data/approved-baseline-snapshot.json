@@ -1,0 +1,52 @@
+{
+  "connections": [
+    {
+      "process": "chrome",
+      "protocol": "tcp",
+      "remote": "203.0.113.10:443"
+    }
+  ],
+  "cron_jobs": [
+    {
+      "command": "0 3 * * * /usr/local/bin/backup",
+      "line": "1",
+      "source": "/etc/crontab"
+    }
+  ],
+  "metadata": {
+    "baseline_approval": {
+      "approved_at": "2026-05-18T03:45:21.505119+00:00",
+      "approved_by": "sudarshan",
+      "captured_at": "2026-05-17T00:00:00+00:00",
+      "hostname": "kiosk-01",
+      "reason": "Known-good demo kiosk baseline",
+      "snapshot_hash": "dfd65dd936debcef316d59e608bcc94a5351ba1f866d88a710a72ef442d6f2a8"
+    },
+    "captured_at": "2026-05-17T00:00:00+00:00",
+    "hostname": "kiosk-01",
+    "platform": "Linux"
+  },
+  "processes": [
+    {
+      "args": "/usr/bin/chrome --kiosk",
+      "command": "chrome",
+      "pid": "100",
+      "ppid": "1",
+      "user": "kiosk"
+    }
+  ],
+  "services": [
+    {
+      "name": "display-agent.service",
+      "state": "enabled"
+    }
+  ],
+  "ssh_keys": [
+    {
+      "fingerprint": "baselinekey001",
+      "line": "1",
+      "source": "/home/kiosk/.ssh/authorized_keys",
+      "type": "ssh-ed25519"
+    }
+  ]
+}

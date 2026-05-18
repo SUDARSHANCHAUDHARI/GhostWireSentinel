@@ -3,6 +3,7 @@
 Host: kiosk-01
 Current snapshot: 2026-05-17T00:15:00+00:00
 Baseline snapshot: 2026-05-17T00:00:00+00:00
+Baseline approved: 2026-05-18T03:45:21.505119+00:00
 Suppressed findings: 1
 
 ## Detection Breakdown

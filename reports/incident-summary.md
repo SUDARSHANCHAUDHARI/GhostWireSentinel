@@ -1,9 +1,10 @@
 # GhostWire Sentinel Incident Report
 
-Generated: 2026-05-17T18:55:43.222038+00:00
+Generated: 2026-05-18T03:45:27.175580+00:00
 Host: kiosk-01
 Snapshot captured: 2026-05-17T00:15:00+00:00
 Baseline captured: 2026-05-17T00:00:00+00:00
+Baseline approved by: sudarshan at 2026-05-18T03:45:21.505119+00:00
 
 ## Summary
 

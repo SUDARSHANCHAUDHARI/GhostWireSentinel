@@ -23,8 +23,15 @@ The current snapshot adds suspicious drift:
 ## Run
 
 ```bash
+python3 -m agent.cli approve-baseline \
+  --snapshot data/baseline-snapshot.json \
+  --output data/approved-baseline-snapshot.json \
+  --history data/baseline-history.json \
+  --approved-by sudarshan \
+  --reason "Known-good demo kiosk baseline"
+
 python3 -m agent.cli analyze \
-  --baseline data/baseline-snapshot.json \
+  --baseline data/approved-baseline-snapshot.json \
   --current data/current-snapshot.json \
   --allowlist rules/allowlist.json \
   --findings reports/findings.json \
@@ -51,3 +58,4 @@ Wrote timeline report to reports/timeline-report.md
 - `reports/timeline-report.md` for investigation handoff
 - `reports/findings.json` for machine-readable findings
 - `reports/suppressed-findings.json` for allow-listed findings
+- `data/baseline-history.json` for baseline approval history

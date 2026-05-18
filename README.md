@@ -175,8 +175,15 @@ Working CLI MVP.
 Run the demo analysis against the included safe sample snapshots:
 
 ```bash
+python3 -m agent.cli approve-baseline \
+  --snapshot data/baseline-snapshot.json \
+  --output data/approved-baseline-snapshot.json \
+  --history data/baseline-history.json \
+  --approved-by sudarshan \
+  --reason "Known-good demo kiosk baseline"
+
 python3 -m agent.cli analyze \
-  --baseline data/baseline-snapshot.json \
+  --baseline data/approved-baseline-snapshot.json \
   --current data/current-snapshot.json \
   --allowlist rules/allowlist.json \
   --findings reports/findings.json \
@@ -202,6 +209,7 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 
 - Collect running processes, cron jobs, SSH authorized key metadata, startup services, and outbound connections.
 - Compare current device state against a baseline snapshot.
+- Approve a known-good baseline and append baseline history.
 - Detect new services, cron jobs, SSH keys, processes, and outbound connections.
 - Flag suspicious cron commands, startup services, process arguments, unusual outbound ports, and repeated remote connections.
 - Suppress approved findings with an operator-managed allow-list.
@@ -217,6 +225,7 @@ python3 -m unittest discover -s tests -p 'test_*.py'
 - [Sample incident report](reports/incident-summary.md)
 - [Sample anomaly report](reports/anomaly-report.md)
 - [Sample timeline report](reports/timeline-report.md)
+- [Baseline approval history](data/baseline-history.json)
 
 ## Docker Demo
 
@@ -226,8 +235,8 @@ docker compose run --rm ghostwire-demo
 
 ## Roadmap
 
-- Add signed baseline snapshots and baseline history
+- Add signed baseline snapshots
 - Expand allow-list matching with expiration dates and owner fields
-- Add richer timeline output for investigation handoff
+- Add baseline approval owner review workflow
 - Add FastAPI ingestion and React dashboard after the CLI workflow stays stable
 - Prepare GitHub release `v0.1.0-mvp`

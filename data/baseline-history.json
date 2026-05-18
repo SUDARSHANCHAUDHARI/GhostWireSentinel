@@ -1,0 +1,10 @@
+[
+  {
+    "approved_at": "2026-05-18T03:45:21.505119+00:00",
+    "approved_by": "sudarshan",
+    "captured_at": "2026-05-17T00:00:00+00:00",
+    "hostname": "kiosk-01",
+    "reason": "Known-good demo kiosk baseline",
+    "snapshot_hash": "dfd65dd936debcef316d59e608bcc94a5351ba1f866d88a710a72ef442d6f2a8"
+  }
+]

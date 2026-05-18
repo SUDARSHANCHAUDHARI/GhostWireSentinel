@@ -9,7 +9,7 @@ services:
       - agent.cli
       - analyze
       - --baseline
-      - data/baseline-snapshot.json
+      - data/approved-baseline-snapshot.json
       - --current
       - data/current-snapshot.json
       - --allowlist
