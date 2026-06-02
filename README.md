@@ -1,255 +1,129 @@
 # GhostWire Sentinel
 
-[![Python](https://img.shields.io/badge/Python-3.12-blue)](#) [![Status](https://img.shields.io/badge/status-MVP-green)](#) [![Security](https://img.shields.io/badge/security-defensive%20lab-purple)](#)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](#requirements)
+[![Status](https://img.shields.io/badge/status-MVP-green)](#status)
+[![Security](https://img.shields.io/badge/security-defensive%20lab-purple)](#safe-use)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-AI-assisted endpoint threat hunting platform for stealth persistence, baseline drift, and suspicious outbound behavior.
+Endpoint threat hunting agent for Linux devices, kiosks, and edge systems. Detects stealth persistence, baseline drift, suspicious outbound behavior, and silent attacker tradecraft (unauthorized cron, modified binaries, hidden SSH keys, reverse proxies).
 
-- **Portfolio group:** Flagship cybersecurity product project
-- **Status:** MVP implemented, tested, committed, and pushed to GitHub
-- **GitHub:** https://github.com/SUDARSHANCHAUDHARI/GhostWireSentinel
-- **Local path:** `/Users/screencloudsudarshan/SUDARSHAN_CODE/sudarshan_repos/CyberSecurity/GhostWireSentinel`
-
-## MVP Snapshot
-
-This repository includes a working MVP with safe sample data, deterministic detection or analysis logic, local tests, and generated output reports where relevant. It is ready for README/demo polish or deeper product work.
-
-## Safe Use
-
-This project is defensive and analysis-focused. Use only with logs, systems, repositories, and lab environments you own or have permission to assess.
+---
 
 ## Overview
 
-GhostWire Sentinel is an AI-powered stealth persistence and anomaly detection platform.
+GhostWire Sentinel is a defensive analysis agent that captures a security-relevant snapshot of a Linux host — processes, services, cron jobs, SSH keys, outbound connections — then compares it to an approved baseline to detect drift. It also runs anomaly, beaconing, and persistence detectors on the live snapshot for immediate alerts.
 
-This is an advanced cybersecurity startup-style idea focused on silent suspicious behavior, not just basic uptime or health monitoring.
+Target environments: Linux kiosks, signage players, IoT/edge devices, and unattended servers where stealth persistence and silent backdoors are the primary threat.
 
-## Core Concept
+## Features
 
-Most monitoring tools detect:
+- Collects processes, services, cron jobs, SSH keys, and outbound connections
+- Snapshot baseline with approval workflow and history
+- Compares live snapshot against approved baseline (drift detection)
+- Anomaly detector for unexpected processes and services
+- Beaconing detector for periodic outbound callbacks
+- Persistence detector (cron, startup, modified binaries, suspicious SSH keys)
+- Allowlist for trusted processes and services
+- Markdown report, timeline report, anomaly report, and dashboard summary JSON
 
-- crashes
-- CPU spikes
-- offline devices
+## Requirements
 
-GhostWire Sentinel focuses on:
+- Python 3.10 or newer
+- Linux (full feature support); macOS / Windows (partial)
+- No third-party Python packages (standard library only)
+- Optional: Docker for the demo container
 
-> silent suspicious behavior
-
-Examples:
-
-- unusual persistence mechanisms
-- hidden scheduled tasks
-- suspicious startup scripts
-- strange outbound connections
-- modified system binaries
-- stealthy background processes
-- unauthorized cron jobs
-- suspicious SSH keys
-- hidden tunnels and reverse proxies
-
-## Positioning
-
-Lightweight AI-assisted threat hunting platform for Linux devices, kiosks, edge systems, and remote infrastructure.
-
-This is aligned with:
-
-- SOC monitoring
-- threat hunting
-- DFIR
-- endpoint security
-- Linux device monitoring
-- kiosk and signage security
-
-## MVP
-
-Install an agent on a Linux device.
-
-The agent collects:
-
-- running processes
-- startup services
-- cron jobs
-- SSH keys
-- outbound connections
-- system changes
-
-Then the platform:
-
-- compares device state against a baseline
-- flags anomalies
-- generates triage explanations
-- builds an incident timeline
-
-## Killer Features
-
-### Persistence Detection
-
-Detect:
-
-- suspicious systemd services
-- unknown cron jobs
-- modified startup scripts
-- hidden binaries
-
-### Connection Intelligence
-
-Flag:
-
-- unusual outbound IPs
-- TOR/proxy usage
-- reverse shell patterns
-- strange beaconing intervals
-
-### Baseline Drift
-
-Detect:
-
-- new apps installed
-- config changes
-- permission changes
-- new users and groups
-
-### AI Threat Explanations
-
-Instead of:
-
-> Cron modified.
-
-GhostWire Sentinel explains:
-
-> A new scheduled task was added outside the normal deployment window and executes a remote shell script every 15 minutes.
-
-## Suggested Stack
-
-Backend:
-
-- FastAPI
-- PostgreSQL
-- Redis
-- Celery
-
-Agent:
-
-- Python or Go
-
-Frontend:
-
-- React
-- Tailwind
-- shadcn/ui
-
-Detection:
-
-- YARA
-- Sigma-like rules
-- anomaly scoring
-
-AI:
-
-- OpenAI
-- Claude
-
-Deployment:
-
-- Docker
-- Kubernetes later
-
-## Why This Is Strong
-
-GhostWire Sentinel combines cybersecurity, monitoring, AI, automation, Linux internals, threat hunting, and endpoint visibility.
-
-It can evolve into:
-
-- open-source security platform
-- homelab tool
-- SOC utility
-- kiosk/signage security product
-- lightweight EDR-style platform
-
-## Status
-
-Working CLI MVP.
-
-
-## Install
+## Installation
 
 ```bash
+git clone https://github.com/SUDARSHANCHAUDHARI/GhostWireSentinel.git
+cd GhostWireSentinel
 pip install .
 ```
 
-This registers the `ghost-wire` command. Or run directly:
+This registers the `ghost-wire` CLI command.
+
+To run without installing:
 
 ```bash
 python3 main.py --help
 ```
 
-## Quick Start
+## Usage
 
-Run the demo analysis against the included safe sample snapshots:
-
-```bash
-python3 -m agent.cli approve-baseline \
-  --snapshot data/baseline-snapshot.json \
-  --output data/approved-baseline-snapshot.json \
-  --history data/baseline-history.json \
-  --approved-by sudarshan \
-  --reason "Known-good demo kiosk baseline"
-
-python3 -m agent.cli analyze \
-  --baseline data/approved-baseline-snapshot.json \
-  --current data/current-snapshot.json \
-  --allowlist rules/allowlist.json \
-  --findings reports/findings.json \
-  --suppressed-findings reports/suppressed-findings.json \
-  --report reports/incident-summary.md \
-  --anomaly-report reports/anomaly-report.md \
-  --timeline-report reports/timeline-report.md
-```
-
-Collect a local host snapshot:
+Capture and analyze a snapshot using the included sample data:
 
 ```bash
-python3 -m agent.cli collect --output data/current-snapshot.json
+python3 main.py --out-dir reports
 ```
 
-Run tests:
+Generated outputs in `reports/`:
+
+- `snapshot.json` — collected telemetry
+- `baseline-diff.json` — drift findings vs approved baseline
+- `anomalies.json` — detected anomalies
+- `beaconing.json` — periodic outbound callback findings
+- `persistence.json` — persistence mechanism findings
+- `report.md` — Markdown threat hunting report
+- `timeline.md` — chronological timeline of findings
+- `triage.md` — analyst triage checklist
+
+## Project Structure
+
+```
+GhostWireSentinel/
+├── agent/
+│   ├── collectors/   Processes, services, cron, SSH keys, connections, USB
+│   ├── detectors/    Anomaly, beaconing, persistence
+│   ├── baseline/     Snapshot, compare, approve workflow
+│   ├── allowlist.py  Trusted-entity allowlist
+│   ├── main.py       Agent entry
+│   └── report.py     Markdown report builders
+├── apps/             FastAPI/React dashboard scaffold (planned)
+├── data/             Safe sample snapshots and baselines
+├── rules/            Detection rule definitions
+├── docs/             Architecture, security notes, demo
+├── tests/            Unit tests
+├── main.py           CLI entrypoint
+├── pyproject.toml    Package metadata
+└── LICENSE
+```
+
+## Testing
 
 ```bash
 python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
-## MVP Capabilities
-
-- Collect running processes, cron jobs, SSH authorized key metadata, startup services, and outbound connections.
-- Compare current device state against a baseline snapshot.
-- Approve a known-good baseline and append baseline history.
-- Detect new services, cron jobs, SSH keys, processes, and outbound connections.
-- Flag suspicious cron commands, startup services, process arguments, unusual outbound ports, and repeated remote connections.
-- Suppress approved findings with an operator-managed allow-list.
-- Generate JSON findings, suppressed findings, an incident report, anomaly report, and timeline report.
-
-## Demo Artifacts
-
-- [Architecture](docs/architecture.md)
-- [Threat model](docs/threat-model.md)
-- [Deployment](docs/deployment.md)
-- [Demo walkthrough](docs/demo.md)
-- [Release notes](docs/release-notes.md)
-- [Sample incident report](reports/incident-summary.md)
-- [Sample anomaly report](reports/anomaly-report.md)
-- [Sample timeline report](reports/timeline-report.md)
-- [Baseline approval history](data/baseline-history.json)
-
 ## Docker Demo
 
 ```bash
-docker compose run --rm ghostwire-demo
+docker compose run --rm ghost-wire-demo
 ```
+
+## Safe Use
+
+This project is defensive and analysis-focused. Run only on devices and lab environments you own or have explicit written permission to monitor. The sample data is synthetic and safe for public demo use.
+
+## Status
+
+Working CLI agent MVP with collectors, detectors, baseline workflow, tests, and Docker support. Web dashboard scaffold present but not yet implemented.
 
 ## Roadmap
 
-- Add signed baseline snapshots
-- Expand allow-list matching with expiration dates and owner fields
-- Add baseline approval owner review workflow
-- Add FastAPI ingestion and React dashboard after the CLI workflow stays stable
-- Prepare GitHub release `v0.1.0-mvp`
+- Live collection on real Linux hosts (read `/proc`, `/etc`, `ss`, `crontab`)
+- Encrypted snapshot upload to a central collector
+- Signed baseline approvals
+- Web dashboard for fleet drift visualization
+- GitHub release `v0.1.0-mvp`
+
+## License
+
+Released under the [MIT License](LICENSE). You are free to use, modify, and distribute this software with attribution.
+
+## Author
+
+**Sudarshan Chaudhari** — [SudarshanTechLabs](https://github.com/SUDARSHANCHAUDHARI)
+Bangkok, Thailand
+
+For inquiries: open an issue on [GitHub](https://github.com/SUDARSHANCHAUDHARI/GhostWireSentinel/issues).
