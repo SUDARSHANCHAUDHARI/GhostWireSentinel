@@ -170,6 +170,19 @@ It can evolve into:
 
 Working CLI MVP.
 
+
+## Install
+
+```bash
+pip install .
+```
+
+This registers the `ghost-wire` command. Or run directly:
+
+```bash
+python3 main.py --help
+```
+
 ## Quick Start
 
 Run the demo analysis against the included safe sample snapshots:
